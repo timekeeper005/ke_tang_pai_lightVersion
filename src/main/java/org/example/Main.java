@@ -5,5 +5,6 @@ public class Main {
         System.out.println("Hello, World!");
         System.out.println("Go Bears!");
         System.out.println("abc conjecture!");
+        System.out.println("collatz conjecture");
     }
 }
