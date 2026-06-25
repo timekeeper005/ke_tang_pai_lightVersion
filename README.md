@@ -1,3 +1,46 @@
 # ke_tang_pai_lightVersion
-teamwork
-一、 核心数据库模型（Database Schema）这些表结构是你们所有逻辑的物理映射。每个表都是一个独立的原子单元。表名字段设计描述Useruid(PK), name, role用户基础信息Credentialuid(FK), email, password_hash身份凭证（独立表，保证安全）Courseuid(PK), name, sub_title, description, school, semester, cover_image, status课程本体Membershipcourse_uid(FK), user_uid(FK), role纽带：课程与人的关系表Assignmentuid(PK), course_uid(FK), title, content_type, content_data作业定义Submissionid(PK), assignment_uid(FK), student_uid(FK), content, score, feedback, status作业提交与批改二、 契约规范（API Contract）核心原则： 所有的请求和响应必须是 JSON 格式。1. 登录与身份模块 (/api/auth)POST /api/auth/register发送： {name, email, password, role}返回： {status: "success", uid: 101}POST /api/auth/login发送： {email, password}返回： {status: "success", uid: 101, role: "TEACHER"}2. 课程模块 (/api/course)POST /api/course/create发送： {name, sub_title, description, creator_uid}返回： {status: "success", course_uid: 501}POST /api/course/join发送： {course_uid, user_uid, invite_code}返回： {status: "success"}3. 作业与批阅模块 (/api/assignment)POST /api/assignment/publish发送： {course_uid, title, content_data}返回： {status: "success"}POST /api/assignment/grade发送： {submission_id, score, feedback}返回： {status: "success"}三、 后端分层架构（逻辑流）每个人在开发自己的模块时，必须保证代码包含以下三层：DAO (Data Access Object): 只负责写 SQL。例如 AssignmentDAO.save(assignment)。Service (业务逻辑): 负责校验。例如：在批改作业前，先判断该 user_uid 是否拥有该课程的 TEACHER 角色。Controller (接口入口): 只负责解析 JSON 和调用 Service。
+### 一、 核心数据库模型（Database Schema）
+
+这些表结构是你们所有逻辑的物理映射。每个表都是一个独立的原子单元。
+
+|**表名**|**字段设计**|**描述**|
+|---|---|---|
+|**User**|`uid(PK), name, role`|用户基础信息|
+|**Credential**|`uid(FK), email, password_hash`|身份凭证（独立表，保证安全）|
+|**Course**|`uid(PK), name, sub_title, description, school, semester, cover_image, status`|课程本体|
+|**Membership**|`course_uid(FK), user_uid(FK), role`|纽带：课程与人的关系表|
+|**Assignment**|`uid(PK), course_uid(FK), title, content_type, content_data`|作业定义|
+|**Submission**|`id(PK), assignment_uid(FK), student_uid(FK), content, score, feedback, status`|作业提交与批改|
+
+
+
+二、 契约规范（API Contract）
+核心原则： 所有的请求和响应必须是 JSON 格式。
+
+1. 登录与身份模块 (/api/auth)
+   POST /api/auth/register
+   发送： {name, email, password, role}
+   返回： {status: "success", uid: 101}
+   POST /api/auth/login
+   发送： {email, password}
+   返回： {status: "success", uid: 101, role: "TEACHER"}
+2. 课程模块 (/api/course)
+   POST /api/course/create
+   发送： {name, sub_title, description, creator_uid}
+   返回： {status: "success", course_uid: 501}
+   POST /api/course/join
+   发送： {course_uid, user_uid, invite_code}
+   返回： {status: "success"}
+3. 作业与批阅模块 (/api/assignment)
+   POST /api/assignment/publish
+   发送： {course_uid, title, content_data}
+   返回： {status: "success"}
+   POST /api/assignment/grade
+   发送： {submission_id, score, feedback}
+   返回： {status: "success"}
+   三、 后端分层架构（逻辑流）
+   每个人在开发自己的模块时，必须保证代码包含以下三层：
+
+DAO (Data Access Object): 只负责写 SQL。例如 AssignmentDAO.save(assignment)。
+Service (业务逻辑): 负责校验。例如：在批改作业前，先判断该 user_uid 是否拥有该课程的 TEACHER 角色。
+Controller (接口入口): 只负责解析 JSON 和调用 Service。
