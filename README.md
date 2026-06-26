@@ -89,3 +89,67 @@ Controller (接口入口): 只负责解析 JSON 和调用 Service。
 - **严禁 Controller 里直接写 SQL。**
 
 - **严禁 Service 里出现任何 `request.getParameter()` 这种底层的网络调用。**
+
+
+#### 1. 克隆仓库 (第一次接入)
+
+在终端运行：
+
+Bash
+
+```
+git clone https://github.com/timekeeper005/ke_tang_pai_lightVersion.git
+cd ke_tang_pai_lightVersion
+```
+
+#### 2. 配置你的开发分支 (重要！)
+
+**严禁直接在 `main` 分支上开发！** 每个人必须使用自己的功能分支：
+
+Bash
+
+```
+# 基于当前 main 创建并切换到你的功能分支
+git checkout -b feature/你的模块名称-你的名字
+# 例如: git checkout -b feature/user-manager-tt
+```
+
+#### 3. 日常开发流程 (循环操作)
+
+完成代码编写后，请按以下顺序提交：
+
+1. **查看状态：** `git status` (确认修改的文件)
+
+2. **添加文件：** `git add .`
+
+3. **提交更改：** `git commit -m "简述你做了什么，例如：完成User的DAO层接口定义"`
+
+4. **推送到远程：**
+
+   Bash
+
+    ```
+    git push origin feature/你的模块名称-你的名字
+    ```
+
+
+#### 4. 提交合并申请 (Pull Request)
+
+当你完成一个功能模块后：
+
+1. 进入 GitHub 网页端项目地址。
+
+2. 点击 **"Compare & pull request"**。
+
+3. 在 PR 界面描述你完成的工作。
+
+4. **指派 我 为 Reviewer**，等待我审核并合并到 `main` 分支。
+
+
+### 💡 架构师的特别提醒 (避坑清单)
+
+- **不要拉取 (Pull) 后直接在 `main` 工作：** 永远先检查当前是否在 `feature` 分支上 (`git branch`)。
+
+- **定期同步：** 如果 `main` 分支更新了，请在你的分支执行 `git pull origin main` 以获取最新代码。
+
+- **保持干净：** `target` 和 `.idea` 文件夹已通过配置排除，请勿手动强行提交这些临时文件。
